@@ -25,6 +25,8 @@ def change_filepath(filepath):
 def create_wav_file(filepath, morse_text, dit_length, frequency, volume, sample_rate, waveform='sine'):
     filename = input('Enter a name for your wav file: ')
     print('Please wait while your audio file is being generated...')
+    if filepath == '':
+        filepath = getcwd() + slash() + 'wav_files'
     filename = filepath + slash() + filename + '.wav'
     audio_data = generate_audio_data(morse_text,
                                      dit_length,
@@ -95,7 +97,7 @@ def morse_to_ascii_screen(settings):
     volume = settings["volume"]
     print('Please enter a series of morse code tokens to be converted to ASCII, '
           'with intra-letter spaces separated by one space and inter-word spaces '
-          'seperated by three spaces.')
+          'separated by three spaces.')
     morse_text = input('')
     print(morse_to_ascii(morse_text))
     print('Enter "1" to generate a .wav file.')
