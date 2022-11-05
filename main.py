@@ -1,7 +1,7 @@
 from morse_code import ascii_to_morse, morse_to_ascii
 from generate_wav import generate_audio_data, generate_wav_file
 
-from os import getcwd, name, mkdir, system
+from os import getcwd, name, path, mkdir, system
 from sys import exit
 import json
 
@@ -24,10 +24,20 @@ def change_filepath(filepath):
 
 def create_wav_file(filepath, morse_text, dit_length, frequency, volume, sample_rate, waveform='sine'):
     filename = input('Enter a name for your wav file: ')
-    print('Please wait while your audio file is being generated...')
-    if not filepath.exists():
+    if not path.exists(filepath):
         mkdir(filepath)
-    filename = filepath + slash() + filename + '.wav'
+    filename = filepath + slash() + filename
+    if '.wav' not in filename:
+        filename += '.wav'
+    if path.exists(filename):
+        confirm = input(f'A file exists at {filename}.\nDo you wish to overwrite? Y/N\n')
+        if confirm == 'Y' or confirm == 'y':
+            pass
+        else:
+            command = input('Wav file generation cancelled. '
+                            'Press "Enter" to start over or enter "Q" to return to the main screen.\n')
+            return main()
+    print('Please wait while your audio file is being generated...')
     audio_data = generate_audio_data(morse_text,
                                      dit_length,
                                      frequency,
